@@ -1,0 +1,7 @@
+### Saludo sin parámetro
+GET http://localhost:8080/api/v1/saludo
+Accept: application/json
+
+### Saludo con nombre
+GET http://localhost:8080/api/v1/saludo?nombre=Ada
+Accept: application/json
