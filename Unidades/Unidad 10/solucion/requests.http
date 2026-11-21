@@ -30,7 +30,7 @@ Content-Type: application/json
 {"nombre":"Ada Byron","correo":"ada.byron@u.mx"}
 
 ### Crear inscripción después de sustituir el id real del alumno
-POST http://localhost:8080/api/v1/inscripciones?alumnoId=1&materiaId=1
+POST http://localhost:8080/api/v1/inscripciones?alumnoId=1&materiaIds=1
 Authorization: Basic docente docente123
 X-CSRF-TOKEN: {{csrf}}
 

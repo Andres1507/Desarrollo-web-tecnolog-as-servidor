@@ -23,10 +23,10 @@ class AlumnoControllerTest {
     @Test void rechazaUnContratoInvalido() throws Exception {
         // La validación se ejecuta antes de invocar al servicio.
         mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/alumnos")
-            .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-            .content("{\"matricula\":\"\",\"nombre\":\"A\",\"correo\":\"incorrecto\"}"))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.codigo").value("DATOS_INVALIDOS"));
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                        .content("{\"matricula\":\"\",\"nombre\":\"A\",\"correo\":\"incorrecto\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.codigo").value("DATOS_INVALIDOS"));
         org.mockito.Mockito.verifyNoInteractions(service);
     }
 }
