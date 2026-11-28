@@ -1,0 +1,54 @@
+# Ejecutar en orden. Habilita cookies de sesión en tu cliente HTTP.
+@base = http://localhost:8080
+@csrf = COPIA_EL_TOKEN_DE_GET_CSRF
+
+### 0. Obtener CSRF; conserva la cookie JSESSIONID de esta misma sesión
+GET {{base}}/api/v1/csrf
+Authorization: Basic docente docente123
+
+### 1. Éxito: crea un alumno (esperado 201)
+POST {{base}}/api/v1/alumnos
+Authorization: Basic docente docente123
+X-CSRF-TOKEN: {{csrf}}
+Content-Type: application/json
+
+{
+  "matricula": "A001",
+  "nombre": "Ada Lovelace",
+  "correo": "ada@u.mx"
+}
+
+### 2. Validación: correo inválido (esperado 400)
+POST {{base}}/api/v1/alumnos
+Authorization: Basic docente docente123
+X-CSRF-TOKEN: {{csrf}}
+Content-Type: application/json
+
+{
+  "matricula": "A002",
+  "nombre": "Ada Lovelace",
+  "correo": "correo-invalido"
+}
+
+### 3. Ausencia: ID inexistente (esperado 404)
+GET {{base}}/api/v1/alumnos/999999
+Authorization: Basic alumno alumno123
+
+### 4. Conflicto: matrícula A001 duplicada (esperado 409)
+POST {{base}}/api/v1/alumnos
+Authorization: Basic docente docente123
+X-CSRF-TOKEN: {{csrf}}
+Content-Type: application/json
+
+{
+  "matricula": "A001",
+  "nombre": "Otra persona",
+  "correo": "otra@u.mx"
+}
+
+### 5. Seguridad causa 1: sin autenticación (esperado 401)
+GET {{base}}/api/v1/alumnos
+
+### 6. Seguridad causa 2: autenticado sin rol ADMIN (esperado 403)
+GET {{base}}/actuator/metrics
+Authorization: Basic alumno alumno123
